@@ -1,6 +1,6 @@
-### INF601 - Advanced Programming in Python
-### Jeff Johnson
-### Mini Project 4
+# ### INF601 - Advanced Programming in Python
+# ### Jeff Johnson
+# ### Mini Project 4
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
@@ -10,8 +10,14 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.db.models import Count
 
+# Auth (for registration/login support)
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+
 from .models import Question, Choice, ChampionshipPick
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 # ---------------------------------
 # Shared team list for CFP dropdown
@@ -44,7 +50,6 @@ TEAMS = [
     ("utah", "Utah"),
     ("memphis", "Memphis"),
 ]
-
 # convenience map so we can go from "ohio_state" -> "Ohio State"
 TEAM_LOOKUP = dict(TEAMS)
 
@@ -54,25 +59,17 @@ TEAM_LOOKUP = dict(TEAMS)
 # -------------------------
 
 def home(request):
-    """
-    Home page. Introduces the CFP prediction vote and links to everything.
-    Extends polls/base.html with CFP theme.
-    """
+    """CFP-themed landing page (extends polls/base.html)."""
     return render(request, "polls/home.html")
 
 
 def about(request):
-    """
-    About page. Explains what this project is for class.
-    """
+    """About page."""
     return render(request, "polls/about.html")
 
 
 def trivia(request):
-    """
-    College football trivia / fun facts page.
-    Sent to template so we can loop and pretty-print.
-    """
+    """College football trivia / fun facts."""
     facts = [
         "The first college football game was played in 1869 between Rutgers and Princeton.",
         "The College Football Playoff began with the 2014 season. Before that, the BCS picked the title matchup.",
@@ -89,6 +86,28 @@ def trivia(request):
 
 
 # -------------------------
+# Registration (for rubric)
+# -------------------------
+
+def register(request):
+    """
+    Simple user registration using Django's built-in UserCreationForm.
+    Templates expected:
+      - templates/registration/register.html
+      - (login/logout handled by contrib.auth URLs)
+    """
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # log them in after signup
+            return redirect("home")
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/register.html", {"form": form})
+
+
+# -------------------------
 # CFP Champion vote / results
 # -------------------------
 
@@ -96,85 +115,44 @@ def trivia(request):
 def cfp_vote(request):
     """
     Show the CFP vote form (GET) and handle submissions (POST).
-
-    Template: polls/cfp_vote.html (extends polls/base.html)
-
-    Important:
-    - Your real model fields are team_name (CharField), voter (FK or None),
-      voted_at (DateTimeField).
-    - We save the *human-readable* team ("Ohio State"), not the slug key.
+    We store the *readable* team name in ChampionshipPick.team_name.
     """
-
     if request.method == "POST":
         picked_key = request.POST.get("team", "").strip()
 
-        # make sure it's a valid option from TEAMS
-        valid_keys = [key for (key, _label) in TEAMS]
-        if picked_key in valid_keys:
-            readable_name = TEAM_LOOKUP[picked_key]  # e.g. "Ohio State"
-
+        # validate it exists in TEAMS
+        if picked_key in (k for k, _ in TEAMS):
+            readable = TEAM_LOOKUP[picked_key]
             ChampionshipPick.objects.create(
-                team_name=readable_name,
+                team_name=readable,
                 voter=request.user if request.user.is_authenticated else None,
                 voted_at=timezone.now(),
             )
-
             return redirect("polls:cfp_results")
 
-        # invalid or missing pick -> re-render with error
+        # invalid choice -> redisplay with error
         return render(
             request,
             "polls/cfp_vote.html",
-            {
-                "TEAMS": TEAMS,
-                "error_message": "Please select a valid team.",
-            },
+            {"TEAMS": TEAMS, "error_message": "Please select a valid team."},
         )
 
-    # GET request: just render blank form
-    return render(
-        request,
-        "polls/cfp_vote.html",
-        {
-            "TEAMS": TEAMS,
-        },
-    )
+    # GET
+    return render(request, "polls/cfp_vote.html", {"TEAMS": TEAMS})
 
 
 def cfp_results(request):
     """
-    Leaderboard page.
-
-    We aggregate ChampionshipPick rows by team_name and count them.
-    We DO NOT group by the slug key because the DB only knows team_name.
+    Aggregate ChampionshipPick rows by team_name and show counts (desc).
     """
-
-    # SELECT team_name, COUNT(*) AS total
-    # FROM polls_championshippick
-    # GROUP BY team_name
-    # ORDER BY total DESC;
     counts = (
-        ChampionshipPick.objects
-        .values("team_name")
+        ChampionshipPick.objects.values("team_name")
         .annotate(total=Count("id"))
         .order_by("-total")
     )
+    leaderboard = [{"team_name": row["team_name"], "count": row["total"]} for row in counts]
 
-    # massage into something easy for the template
-    leaderboard = []
-    for row in counts:
-        leaderboard.append({
-            "team_name": row["team_name"],
-            "count": row["total"],
-        })
-
-    return render(
-        request,
-        "polls/cfp_results.html",
-        {
-            "leaderboard": leaderboard,
-        },
-    )
+    return render(request, "polls/cfp_results.html", {"leaderboard": leaderboard})
 
 
 # -------------------------
@@ -184,7 +162,7 @@ def cfp_results(request):
 class IndexView(generic.ListView):
     """
     Shows latest 5 poll Questions (not future-dated).
-    Template: polls/index.html  (extends polls/base.html in our project)
+    Template: polls/index.html
     Context var: latest_question_list
     """
     template_name = "polls/index.html"
@@ -192,30 +170,22 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return (
-            Question.objects
-            .filter(pub_date__lte=timezone.now())
+            Question.objects.filter(pub_date__lte=timezone.now())
             .order_by("-pub_date")[:5]
         )
 
 
 class DetailView(generic.DetailView):
-    """
-    Detail page for a single Question (vote form).
-    Template: polls/detail.html
-    """
+    """Vote form for a single Question."""
     model = Question
     template_name = "polls/detail.html"
 
     def get_queryset(self):
-        # Don't show questions scheduled in the future.
         return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
-    """
-    Shows results for a single Question (tally of each Choice).
-    Template: polls/results.html
-    """
+    """Results for a single Question."""
     model = Question
     template_name = "polls/results.html"
 
@@ -223,26 +193,22 @@ class ResultsView(generic.DetailView):
 def vote(request, question_id):
     """
     Handle POST vote for a regular poll Question/Choice.
-    After saving, redirect back to that Question's results page.
-    If no choice provided, redisplay form with an error.
     """
     question = get_object_or_404(Question, pk=question_id)
-
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the voting form with an error message.
         return render(
             request,
             "polls/detail.html",
-            {
-                "question": question,
-                "error_message": "You didn't select an answer.",
-            },
+            {"question": question, "error_message": "You didn't select an answer."},
         )
     else:
-        selected_choice.votes = selected_choice.votes + 1
+        selected_choice.votes += 1
         selected_choice.save()
-        return HttpResponseRedirect(
-            reverse("polls:results", args=(question.id,))
-        )
+        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+def logout_then_home(request):
+    """Log out on GET or POST, then send home."""
+    logout(request)
+    return redirect("home")

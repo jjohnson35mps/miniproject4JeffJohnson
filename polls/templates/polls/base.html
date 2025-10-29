@@ -17,6 +17,16 @@
 
   <body class="container py-5">
 
+  <div class="d-flex gap-3 justify-content-end mb-3">
+      {% if user.is_authenticated %}
+        <span class="small">Hi, {{ user.username }}!</span>
+        <a class="btn-cfp-outline btn-sm" href="{% url 'logout' %}">Log out</a>
+      {% else %}
+        <a class="btn-cfp-outline btn-sm" href="{% url 'login' %}">Log in</a>
+        <a class="btn-cfp-dark btn-sm" href="{% url 'register' %}">Register</a>
+      {% endif %}
+  </div>
+
     {# Optional global nav/header could go here later if you want #}
 
     {% block content %}

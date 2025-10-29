@@ -68,10 +68,35 @@
     </div>
 
     <!-- footer links -->
-    <div class="footer-links text-center text-md-start mt-4">
-      <div><a href="{% url 'polls:about' %}">What is this project?</a></div>
-      <div><a href="{% url 'polls:trivia' %}">College Football Trivia</a></div>
+    <div class="footer-links text-center mt-4">
+      <!-- Trigger -->
+      <a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">
+        What is this project?
+      </a>
+      <div><a href="{% url 'polls:trivia' %}">College Football Trivia 🏈</a></div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="aboutModalLabel">About This Project</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            This is my INF601 Mini Project 4. It’s a Django app where fans vote on the
+            2025 CFP Champion and answer classic college football polls. Results are shown
+            live with a custom CFP-themed UI.
+          </div>
+          <div class="modal-footer">
+            <a class="btn-cfp-outline" href="{% url 'polls:about' %}">Full About Page</a>
+            <button type="button" class="btn-cfp-dark" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 

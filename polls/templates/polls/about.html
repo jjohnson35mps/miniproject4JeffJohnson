@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>About This Project</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+  </head>
+  <body class="container py-5">
+
+    <h1 class="mb-4">About This Project</h1>
+
+    <p class="lead">
+      This Django web app is my Mini Project Four.
+    </p>
+
+    <ul class="list-group mb-4">
+      <li class="list-group-item">
+        Users predict the 2025 College Football Playoff champion by picking from the AP Top 25.
+      </li>
+      <li class="list-group-item">
+        Votes are stored in the database (ChampionshipPick model).
+      </li>
+      <li class="list-group-item">
+        Results are aggregated and shown with live percentages.
+      </li>
+      <li class="list-group-item">
+        Admin interface lets us browse and filter all submitted picks.
+      </li>
+      <li class="list-group-item">
+        Site uses Bootstrap styling, modals, and a POST form.
+      </li>
+      <li class="list-group-item">
+        Login is supported for admin; the app is ready for per-user vote tracking.
+      </li>
+    </ul>
+
+    <p>
+      Tech stack: Django 5.x, SQLite, Bootstrap.
+    </p>
+
+    <a class="btn btn-primary" href="/">Back Home</a>
+    <div class="text-center mt-4">
+      <a class="btn btn-warning me-2" href="{% url 'trivia' %}">
+        College Football Trivia 🏈
+      </a>
+      <a class="btn btn-link" href="/">Back Home</a>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

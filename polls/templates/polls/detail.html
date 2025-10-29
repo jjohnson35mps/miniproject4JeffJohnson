@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ question.question_text }}</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+  </head>
+
+  <body class="container py-5">
+
+    <!-- Question text -->
+    <h1 class="mb-4 text-center">
+      {{ question.question_text }}
+    </h1>
+
+    <!-- Optional error (for when they submitted with no choice selected) -->
+    {% if error_message %}
+      <div class="alert alert-danger text-center">
+        {{ error_message }}
+      </div>
+    {% endif %}
+
+    <!-- Voting form card -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Your pick:</label>
+
+            {% for choice in question.choice_set.all %}
+              <div class="form-check mb-2">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="choice"
+                  id="choice{{ forloop.counter }}"
+                  value="{{ choice.id }}"
+                  required
+                >
+                <label
+                  class="form-check-label"
+                  for="choice{{ forloop.counter }}"
+                >
+                  {{ choice.choice_text }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary w-100 fw-bold"
+          >
+            Submit Vote
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Navigation buttons under the poll -->
+    <div class="text-center">
+      <a
+        class="btn btn-outline-dark me-2 mb-2"
+        href="{% url 'polls:results' question.id %}"
+      >
+        View Results 📊
+      </a>
+
+      <a
+        class="btn btn-secondary me-2 mb-2"
+        href="{% url 'polls:index' %}"
+      >
+        Back to All Polls
+      </a>
+
+      <a
+        class="btn btn-link d-block"
+        href="/"
+      >
+        Home
+      </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

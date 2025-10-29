@@ -1,92 +1,117 @@
 ### INF601 - Advanced Programming in Python
 ### Jeff Johnson
-### Mini Project 3
+### Mini Project 4
  
+## Mini Project 4 — CFP / Polls Web App (Django)
  
-## Mini Project 3 — Bama Pick ’Em (Flask Web App)
- 
-A small Flask web app where users predict Alabama football scores, earn points, and climb a leaderboard.
+A small Django web app where users can participate in trivia and CFP-style polls, register/login, vote, and view results. The project uses Django’s built-in authentication, Bootstrap 5 styling, and includes a required modal.
 
 ## Description
  
 What this app does
 
-- Pages (6): Home, Schedule, Make/Edit Pick, My Picks, Leaderboard, About/Rules
-- Auth: Register, login, logout (session-based)
-- Picks: One pick per user per game, editable until the game is Final
-- Scoring: 0–50 points per game
-- Raw = winner_bonus (10 or 0) - margin_diff - total_diff
-- Points = max(0, 40 + Raw) → exact score = 50
-- UI: Bootstrap 5 with a required modal (“How to Play”), custom crimson theme
-- Data: SQLite with user, game, pick (FKs + unique username)
+- **Pages (8):** Home, About, Trivia, Poll List, Poll Detail (Vote), Results, Register, Login  
+- **Auth:** Register, login, logout (Django’s built-in authentication system)  
+- **Polls:** Users can vote on poll questions and view the results in real time  
+- **Data:** Models include `Question` and `Choice` with a ForeignKey relationship  
+- **Admin:** Django admin interface to manage questions and choices  
+- **UI:** Bootstrap 5 with a required modal (“View Info”), consistent base template, and custom CSS  
+- **Database:** SQLite using Django ORM and migrations
+
+
 
 ```
-├─ app/
-│  ├─ __init__.py           # Flask factory + CLI seed commands
-│  ├─ auth.py               # Register/Login/Logout, session auth
-│  ├─ db.py                 # SQLite connection + init-db command
-│  ├─ main.py               # Pages: home, schedule, pick form, my picks, leaderboard, about
-│  ├─ schema.sql            # Tables: user, game, pick (+ indexes)
-│  ├─ static/
-│  │  ├─ style.css          # Crimson theme + navbar/button tweaks
-│  │  └─ logo.svg           # Alabama "script A" (local asset)
-│  └─ templates/
-│     ├─ base.html          # Bootstrap layout + How-to-Play modal
-│     ├─ index.html         # Home
-│     ├─ about.html         # About & detailed rules
-│     ├─ schedule.html      # Game list/cards (shows “Pick made” if applicable)
-│     ├─ pick_form.html     # Make/Edit Pick (GET/POST)
-│     ├─ mypicks.html       # User’s picks
-│     ├─ leaderboard.html   # Ranked scores
-│     ├─ auth/
-│     │  ├─ login.html
-│     │  ├─ register.html
-│     │  └─ login_redirect.html  # 5s pause after login → Home
-│     └─ partials/
-│        └─ rules_core.html  # Shared rules used by modal + About
-├─ instance/
-│  └─ app.db               # (created at runtime)
+├─ manage.py
 ├─ requirements.txt
-└─ README.md  (this file)
+├─ README.md (this file)
+├─ mysite/
+│ ├─ init.py
+│ ├─ asgi.py
+│ ├─ settings.py # Installed apps, templates, static config
+│ ├─ urls.py # Includes polls.urls and authentication routes
+│ └─ wsgi.py
+├─ polls/
+│ ├─ init.py
+│ ├─ admin.py # ModelAdmin for Question and Choice
+│ ├─ models.py # Question and Choice models
+│ ├─ views.py # home, about, trivia, register, logout_then_home, etc.
+│ ├─ urls.py # App-specific routes
+│ ├─ migrations/
+│ ├─ static/
+│ │ ├─ polls/
+│ │ │ ├─ cfp_trophy.png
+│ │ │ └─ style.css
+│ └─ templates/
+│ ├─ polls/
+│ │ ├─ about.html
+│ │ ├─ base.html
+│ │ ├─ cfp_results.html
+│ │ ├─ cfp_vote.html
+│ │ ├─ detail.html
+│ │ ├─ home.html
+│ │ ├─ index.html
+│ │ ├─ question_list.html
+│ │ ├─ results.html
+│ │ └─ trivia.html
+│ └─ registration/
+│ ├─ login.html
+│ └─ register.html
+└─ db.sqlite3 # Created at runtime
 ```
 
-Database Schema:
-- user: id, username (UNIQUE COLLATE NOCASE), password, created_at
-- game: id, week, date, opponent, location, bama_is_home, final_bama, final_opp
-- pick: id, user_id → user.id, game_id → game.id, pred_bama, pred_opp, created_at, UNIQUE(user_id, game_id)
 
-Foreign keys are enforced (PRAGMA foreign_keys = ON). See app/schema.sql.
+### Database Schema:
+- **Question:** id, question_text, pub_date  
+- **Choice:** id, question (FK), choice_text, votes  
+
+Foreign keys and relationships are managed automatically through Django’s ORM and migrations.
+
+---
 
 ## Using The App
 
-1. Create your account
-   - Go to Register and choose a username and password. Usernames are unique (case-insensitive).
+1. **Create your database**
+   - Run the Django commands below to initialize your database:
+     ```bash
+     python manage.py makemigrations
+     python manage.py migrate
+     python manage.py createsuperuser
+     ```
 
-2. Log in
-   - Sign in on Login. You’ll see a brief “Login successful” screen (about 5 seconds), then you’ll land on Home.
+2. **Start the development server**
+   ```bash
+   python manage.py runserver
+   
+3. Access the application
+    - App: http://127.0.0.1:8000/    
+    - Admin: http://127.0.0.1:8000/admin/
 
-3. Make a pick
-   - Open Schedule → choose an upcoming game → click Make / Edit Pick.
-   - Enter your predicted scores for Alabama and the opponent, then Save.
-   - You can change your pick any time until the game is marked Final.
+4. Register a user
+    - Go to /accounts/register/ and create a new user account.    
+    - Then login through /accounts/login/.    
+    - Logout via /accounts/logout/.
 
-4. Check your picks
-   - Go to My Picks to see everything you’ve submitted.
-   - For games that aren’t Final yet, you can click Edit Pick to update your scores.
+5. Vote in a poll
+    - Visit /polls/ to view available polls.
+    - Click a question to open its detail page, select a choice, and submit your vote.
+    - After voting, you’ll see the updated results page.
 
-5. See the standings
-   - Visit Leaderboard to view rankings once results exist.
-   - Scoring is 0–50 points per game (exact score = 50). Higher total = higher rank.
+6. Check results
+    - View results directly after voting or by visiting /polls/<id>/results/.
+    - The page shows each choice and its current vote count.
 
-Quick rules
-Click How to Play in the navbar for a quick summary.
-For detailed scoring examples, open About.
+7. Use the admin interface
+    - Log into /admin/ with your superuser credentials to manage Question and Choice models.
 
-Tip: On the Schedule page, you’ll see a small green “Pick made” tag on games you’ve already picked.
+Quick Info:
+Click the “View Info” button on the home page to open the required Bootstrap modal.
+All templates extend from base.html for consistent site styling.
+
  
 ### Dependencies
  
 - Python 3.13.7
+- Django 5.2.7
 - Operating System: 
     - Windows
 
@@ -101,38 +126,24 @@ pip install -r requirements.txt
 2. Go to the project root.
 3. Ensure you have the required dependencies listed above installed
    - pip install -r requirements.txt
-4. Initialize a fresh database
-   - flask --app app:create_app init-db
-5. Seed the 2025 schedule and apply finals for played games
-   - flask --app app:create_app seed-games-2025
-   - flask --app app:create_app seed-finals-2025
-6. Create demo users (all passwords = 'password')
-   - flask --app app:create_app seed-users -n 12
-7. Create random picks for completed games
-   - flask --app app:create_app seed-random-picks
-8. Verify data
-   - flask --app app:create_app show-games
+4. Start the development server.
+   - python manage.py runserver
  
 ## Executing program
 
 Run the server
 ```
-flask --app app:create_app run --debug
+python manage.py runserver
 ```
-The server will run on http://127.0.0.1:5000
+The server will run on http://127.0.0.1:8000
  
 ## Help
  
 If you encounter issues, re-run pip installs and re-seed the app settings:
 ```
 pip install -r requirements.txt
-flask --app app:create_app init-db
-flask --app app:create_app seed-games-2025
-flask --app app:create_app seed-finals-2025
-flask --app app:create_app seed-users -n 12
-flask --app app:create_app seed-random-picks
-flask --app app:create_app show-games
-flask --app app:create_app run --debug
+python manage.py runserver
+
 ```
  
 ## Authors
@@ -151,7 +162,7 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 ## Acknowledgments
  
 Inspiration, code snippets, etc.
-- [Flask Tutorial](https://flask.palletsprojects.com/en/stable/tutorial/)
-- [ChatGPT](https://chatgpt.com/g/g-p-68e844d65ae48191943f2b20b65971dc-mini-project-three/project)
+- [Django Tutorial](https://docs.djangoproject.com/en/5.2/intro/tutorial01/)
+- [ChatGPT](https://chatgpt.com/g/g-p-690132306a9c8191b70435990b8efb62-mini-project-four/project)
 *** I use a ChatGPT paid acct, so I cannot share ***
 

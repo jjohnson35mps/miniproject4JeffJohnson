@@ -12,7 +12,7 @@
   </head>
   <body class="container py-5">
 
-    <h1 class="mb-4">Latest Questions</h1>
+    <h1 class="page-title">Latest Questions</h1>
 
     {# 'latest_question_list' comes from IndexView in polls/views.py #}
     {% if latest_question_list %}
@@ -35,15 +35,15 @@
     {% endif %}
 
     <div class="mt-4 d-flex flex-column flex-md-row gap-2">
-      <a class="btn btn-outline-dark flex-fill" href="{% url 'polls:cfp_vote' %}">
+      <a class="btn-cfp-gold flex-fill text-center py-2" href="{% url 'polls:cfp_vote' %}">
         Predict the 2025 CFP Champion 🏆
       </a>
 
-      <a class="btn btn-secondary flex-fill" href="{% url 'polls:cfp_results' %}">
+      <a class="btn-cfp-dark flex-fill text-center py-2" href="{% url 'polls:cfp_results' %}">
         View Fan Leaderboard 📊
       </a>
 
-      <a class="btn btn-link flex-fill" href="/">
+      <a class="btn-cfp-outline flex-fill text-center py-2" href="/">
         Back Home
       </a>
     </div>

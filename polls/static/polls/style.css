@@ -1,0 +1,275 @@
+/* CFP THEME
+   Black: #000000 / near-black #111
+   Gold:  #C9A24A (soft metallic gold)
+   Light gold accent: #E2C86B
+   White: #FFFFFF
+   Gray background blocks: #f5f5f5 / #ececec
+   Border gray: #d4d4d4
+   Body text: #1a1a1a
+*/
+
+/* Global reset-ish */
+body {
+    background-color: #f5f5f5;          /* light neutral page bg like CFP site */
+    color: #1a1a1a;                      /* dark readable text */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+}
+
+/* Headline style: bold, uppercase-ish vibe, dark text */
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: 0.03em;
+}
+
+/* Add subtle gold underline bar under page titles (matches CFP section headers) */
+.page-title {
+    position: relative;
+    display: inline-block;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.page-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -0.5rem;
+    width: 3rem;
+    height: 3px;
+    background-color: #C9A24A; /* gold bar above heading */
+}
+
+/* Cards / content boxes */
+.card,
+.list-group-item,
+.result-card,
+.vote-card {
+    background-color: #ffffff;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* poll question list items */
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-left: 4px solid transparent;
+    transition: all 0.15s ease-in-out;
+}
+
+.list-group-item:hover {
+    background-color: #ececec;
+    border-left-color: #C9A24A; /* gold left stripe on hover */
+    text-decoration: none;
+}
+
+/* question link text */
+.list-group-item a.fw-semibold,
+.list-group-item a {
+    color: #111111;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.list-group-item a:hover {
+    color: #C9A24A;
+    text-decoration: none;
+}
+
+/* timestamp badge on question list */
+.badge.text-bg-secondary {
+    background-color: #111111 !important; /* black pill */
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 3px;
+    border: 1px solid #000;
+}
+
+/* "results" badges with vote counts */
+.badge.text-bg-primary,
+.badge.bg-primary,
+.badge-primary {
+    background-color: #C9A24A !important; /* gold pill */
+    border: 1px solid #111 !important;
+    color: #111 !important;
+    font-weight: 700;
+    border-radius: 3px !important;
+    min-width: 4rem;
+    text-align: center;
+}
+
+/* CFP-style buttons
+   We'll define our own and you can add these classes in templates.
+*/
+
+/* Gold / primary call-to-action (buy tickets style) */
+.btn-cfp-gold {
+    background-color: #C9A24A;
+    border: 2px solid #C9A24A;
+    color: #111111;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.03em;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.25);
+}
+.btn-cfp-gold:hover {
+    background-color: #E2C86B;
+    border-color: #E2C86B;
+    color: #111;
+}
+
+/* Dark / neutral block button (like CFP nav black buttons) */
+.btn-cfp-dark {
+    background-color: #111111;
+    border: 2px solid #111111;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    box-shadow: 0 2px 2px rgba(0,0,0,0.4);
+}
+.btn-cfp-dark:hover {
+    background-color: #000000;
+    border-color: #000000;
+    color: #fff;
+}
+
+/* Outline dark/gray button */
+.btn-cfp-outline {
+    background-color: #ffffff;
+    border: 2px solid #111111;
+    color: #111111;
+    font-weight: 600;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+}
+.btn-cfp-outline:hover {
+    background-color: #ececec;
+    color: #000;
+}
+
+/* link-style (Back Home, etc.) */
+.btn-cfp-link {
+    background: transparent;
+    border: none;
+    color: #111111;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    text-decoration: underline;
+}
+.btn-cfp-link:hover {
+    color: #C9A24A;
+    text-decoration: underline;
+}
+
+/* Block/section separators */
+hr,
+.divider-line {
+    border: 0;
+    border-top: 2px solid #C9A24A;
+    max-width: 60px;
+    margin: 2rem auto;
+}
+
+/* CFP-ish "quick links list" style */
+.quick-links-box {
+    background-color: #ffffff;
+    border: 1px solid #d4d4d4;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+}
+.quick-links-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #111;
+    text-transform: uppercase;
+    border-bottom: 1px solid #d4d4d4;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.quick-links-box a {
+    display: block;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: #111111;
+    padding: 0.4rem 0;
+    line-height: 1.3;
+    font-weight: 500;
+}
+.quick-links-box a:hover {
+    color: #C9A24A;
+}
+
+/* Poll detail form (radio choices) */
+.poll-choice-row {
+    border: 1px solid #d4d4d4;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.poll-choice-row:hover {
+    border-color: #C9A24A;
+    background-color: #ececec;
+}
+
+.poll-choice-row input[type="radio"] {
+    margin-right: 0.75rem;
+    accent-color: #C9A24A; /* modern browsers */
+}
+
+/* Results list */
+.results-list .list-group-item {
+    border-left: none;
+    background-color: #fff;
+}
+.results-list .list-group-item + .list-group-item {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #d4d4d4;
+}
+.results-list .list-group-item:last-child {
+    border-bottom: 0;
+}
+
+/* Center footer nav links under result cards */
+.results-actions .btn {
+    min-width: 160px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Make small text under hero buttons look more CFP-ish */
+.footer-links a {
+    color: #111;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    font-weight: 500;
+}
+.footer-links a:hover {
+    color: #C9A24A;
+}
+
+/* Utility spacing helpers */
+.mb-xxl {
+    margin-bottom: 3rem !important;
+}
+.mt-xxl {
+    margin-top: 3rem !important;
+}

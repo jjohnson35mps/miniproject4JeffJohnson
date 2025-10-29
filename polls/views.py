@@ -3,7 +3,7 @@
 ### Mini Project 4
 
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
@@ -13,6 +13,42 @@ from django.db.models import Count
 from .models import Question, Choice, ChampionshipPick
 
 
+# ---------------------------------
+# Shared team list for CFP dropdown
+# ---------------------------------
+# Each item is (slug_key_used_in_form, human_readable_label)
+TEAMS = [
+    ("ohio_state", "Ohio State"),
+    ("indiana", "Indiana"),
+    ("texas_a_m", "Texas A&M"),
+    ("alabama", "Alabama"),
+    ("georgia", "Georgia"),
+    ("oregon", "Oregon"),
+    ("ole_miss", "Ole Miss"),
+    ("georgia_tech", "Georgia Tech"),
+    ("vanderbilt", "Vanderbilt"),
+    ("byu", "BYU"),
+    ("miami", "Miami"),
+    ("notre_dame", "Notre Dame"),
+    ("texas_tech", "Texas Tech"),
+    ("tennessee", "Tennessee"),
+    ("virginia", "Virginia"),
+    ("louisville", "Louisville"),
+    ("cincinnati", "Cincinnati"),
+    ("oklahoma", "Oklahoma"),
+    ("missouri", "Missouri"),
+    ("texas", "Texas"),
+    ("michigan", "Michigan"),
+    ("houston", "Houston"),
+    ("usc", "USC"),
+    ("utah", "Utah"),
+    ("memphis", "Memphis"),
+]
+
+# convenience map so we can go from "ohio_state" -> "Ohio State"
+TEAM_LOOKUP = dict(TEAMS)
+
+
 # -------------------------
 # Landing / static-ish pages
 # -------------------------
@@ -20,6 +56,7 @@ from .models import Question, Choice, ChampionshipPick
 def home(request):
     """
     Home page. Introduces the CFP prediction vote and links to everything.
+    Extends polls/base.html with CFP theme.
     """
     return render(request, "polls/home.html")
 
@@ -34,6 +71,7 @@ def about(request):
 def trivia(request):
     """
     College football trivia / fun facts page.
+    Sent to template so we can loop and pretty-print.
     """
     facts = [
         "The first college football game was played in 1869 between Rutgers and Princeton.",
@@ -51,78 +89,70 @@ def trivia(request):
 
 
 # -------------------------
-# CFP Champion vote
+# CFP Champion vote / results
 # -------------------------
-
-# Snapshot of the AP Top 25 teams we’re letting people pick from.
-# You can tweak this list if the rankings change.
-AP_TOP_25 = [
-    "Ohio State",
-    "Indiana",
-    "Texas A&M",
-    "Alabama",
-    "Georgia",
-    "Oregon",
-    "Ole Miss",
-    "Georgia Tech",
-    "Vanderbilt",
-    "BYU",
-    "Miami",
-    "Notre Dame",
-    "Texas Tech",
-    "Tennessee",
-    "Virginia",
-    "Louisville",
-    "Cincinnati",
-    "Oklahoma",
-    "Missouri",
-    "Texas",
-    "Michigan",
-    "Houston",
-    "USC",
-    "Utah",
-    "Memphis",
-]
 
 @require_http_methods(["GET", "POST"])
 def cfp_vote(request):
     """
-    Show the CFP vote form and handle POST submissions.
-    Saves a ChampionshipPick row with the chosen team.
+    Show the CFP vote form (GET) and handle submissions (POST).
+
+    Template: polls/cfp_vote.html (extends polls/base.html)
+
+    Important:
+    - Your real model fields are team_name (CharField), voter (FK or None),
+      voted_at (DateTimeField).
+    - We save the *human-readable* team ("Ohio State"), not the slug key.
     """
+
     if request.method == "POST":
-        picked_team = request.POST.get("team_choice")
+        picked_key = request.POST.get("team", "").strip()
 
-        # Validate that the chosen team is in our AP_TOP_25 list
-        if picked_team in AP_TOP_25:
+        # make sure it's a valid option from TEAMS
+        valid_keys = [key for (key, _label) in TEAMS]
+        if picked_key in valid_keys:
+            readable_name = TEAM_LOOKUP[picked_key]  # e.g. "Ohio State"
+
             ChampionshipPick.objects.create(
-                team_name=picked_team,
+                team_name=readable_name,
                 voter=request.user if request.user.is_authenticated else None,
+                voted_at=timezone.now(),
             )
-            # Redirect to results after successful vote
-            return HttpResponseRedirect(reverse("polls:cfp_results"))
 
-        # If invalid input, redisplay the form with an error
+            return redirect("polls:cfp_results")
+
+        # invalid or missing pick -> re-render with error
         return render(
             request,
             "polls/cfp_vote.html",
             {
-                "teams": AP_TOP_25,
+                "TEAMS": TEAMS,
                 "error_message": "Please select a valid team.",
             },
         )
 
-    # GET request: show the form
-    return render(request, "polls/cfp_vote.html", {"teams": AP_TOP_25})
+    # GET request: just render blank form
+    return render(
+        request,
+        "polls/cfp_vote.html",
+        {
+            "TEAMS": TEAMS,
+        },
+    )
 
 
 def cfp_results(request):
     """
-    Leaderboard page:
-    - Aggregate all ChampionshipPick rows
-    - Show vote counts and percentages per team
+    Leaderboard page.
+
+    We aggregate ChampionshipPick rows by team_name and count them.
+    We DO NOT group by the slug key because the DB only knows team_name.
     """
-    # Count how many picks per team, sorted by most-picked
+
+    # SELECT team_name, COUNT(*) AS total
+    # FROM polls_championshippick
+    # GROUP BY team_name
+    # ORDER BY total DESC;
     counts = (
         ChampionshipPick.objects
         .values("team_name")
@@ -130,59 +160,62 @@ def cfp_results(request):
         .order_by("-total")
     )
 
-    # total votes overall (avoid divide-by-zero)
-    grand_total = sum(row["total"] for row in counts) or 1
-
-    # decorate each row with a computed percentage
-    results = []
+    # massage into something easy for the template
+    leaderboard = []
     for row in counts:
-        pct = (row["total"] / grand_total) * 100
-        results.append({
+        leaderboard.append({
             "team_name": row["team_name"],
-            "votes": row["total"],
-            "percent": round(pct, 1),
+            "count": row["total"],
         })
 
     return render(
         request,
         "polls/cfp_results.html",
         {
-            "results": results,
-            "grand_total": grand_total,
+            "leaderboard": leaderboard,
         },
     )
 
 
 # -------------------------
-# Original Polls tutorial views
+# Classic Polls (Django tutorial)
 # -------------------------
 
 class IndexView(generic.ListView):
+    """
+    Shows latest 5 poll Questions (not future-dated).
+    Template: polls/index.html  (extends polls/base.html in our project)
+    Context var: latest_question_list
+    """
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
     def get_queryset(self):
-        """
-        Return the last five published questions (not including future polls).
-        """
         return (
-            Question.objects.filter(pub_date__lte=timezone.now())
+            Question.objects
+            .filter(pub_date__lte=timezone.now())
             .order_by("-pub_date")[:5]
         )
 
 
 class DetailView(generic.DetailView):
+    """
+    Detail page for a single Question (vote form).
+    Template: polls/detail.html
+    """
     model = Question
     template_name = "polls/detail.html"
 
     def get_queryset(self):
-        """
-        Exclude any questions that aren't published yet.
-        """
+        # Don't show questions scheduled in the future.
         return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
+    """
+    Shows results for a single Question (tally of each Choice).
+    Template: polls/results.html
+    """
     model = Question
     template_name = "polls/results.html"
 
@@ -190,19 +223,21 @@ class ResultsView(generic.DetailView):
 def vote(request, question_id):
     """
     Handle POST vote for a regular poll Question/Choice.
+    After saving, redirect back to that Question's results page.
+    If no choice provided, redisplay form with an error.
     """
     question = get_object_or_404(Question, pk=question_id)
 
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form with an error.
+        # Redisplay the voting form with an error message.
         return render(
             request,
             "polls/detail.html",
             {
                 "question": question,
-                "error_message": "You didn't select a choice.",
+                "error_message": "You didn't select an answer.",
             },
         )
     else:

@@ -137,11 +137,10 @@ pip install -r requirements.txt
 
 Run the server
 ```
-
 python manage.py runserver
 ```
 The server will run on http://127.0.0.1:8000
- 
+Default username and password admin/admin
 ## Help
  
 If you encounter issues, re-run pip installs and re-seed the app settings:

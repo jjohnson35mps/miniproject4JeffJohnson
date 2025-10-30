@@ -126,13 +126,18 @@ pip install -r requirements.txt
 2. Go to the project root.
 3. Ensure you have the required dependencies listed above installed
    - pip install -r requirements.txt
-4. Start the development server.
+4. Initialize the database.
+   - python manage.py makemigrations
+   - python manage.py migrate
+   - python manage.py createsuperuser
+5. Start the development server.
    - python manage.py runserver
  
 ## Executing program
 
 Run the server
 ```
+
 python manage.py runserver
 ```
 The server will run on http://127.0.0.1:8000

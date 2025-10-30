@@ -17,7 +17,6 @@ from django.contrib.auth import login
 from .models import Question, Choice, ChampionshipPick
 
 from django.contrib.auth import logout
-from django.shortcuts import redirect
 
 # ---------------------------------
 # Shared team list for CFP dropdown

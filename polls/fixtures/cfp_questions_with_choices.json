@@ -4,21 +4,6 @@
   {"model": "polls.question", "pk": 1003, "fields": {"question_text": "Which conference will have the most teams in the final CFP rankings?", "pub_date": "2025-08-03T12:00:00Z"}},
   {"model": "polls.question", "pk": 1004, "fields": {"question_text": "Who will win the SEC in 2025?", "pub_date": "2025-08-04T12:00:00Z"}},
   {"model": "polls.question", "pk": 1005, "fields": {"question_text": "Who will win the Big Ten in 2025?", "pub_date": "2025-08-05T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1006, "fields": {"question_text": "Who will win the Big 12 in 2025?", "pub_date": "2025-08-06T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1007, "fields": {"question_text": "Who will win the ACC in 2025?", "pub_date": "2025-08-07T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1008, "fields": {"question_text": "Which underdog will finish with the most wins in 2025?", "pub_date": "2025-08-08T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1009, "fields": {"question_text": "Which team will upset a top-10 team at home?", "pub_date": "2025-08-09T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1010, "fields": {"question_text": "Which QB will lead the nation in passing yards?", "pub_date": "2025-08-10T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1011, "fields": {"question_text": "Which RB will lead the nation in rushing yards?", "pub_date": "2025-08-11T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1012, "fields": {"question_text": "Which freshman will win a conference offensive rookie award?", "pub_date": "2025-08-12T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1013, "fields": {"question_text": "Which team will have the best defense S&P+ rating?", "pub_date": "2025-08-13T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1014, "fields": {"question_text": "Which coach will be named Coach of the Year?", "pub_date": "2025-08-14T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1015, "fields": {"question_text": "Which team will break into the top 10 after starting unranked?", "pub_date": "2025-08-15T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1016, "fields": {"question_text": "Which team will produce the most NFL draft picks in 2026?", "pub_date": "2025-08-16T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1017, "fields": {"question_text": "Which team will have the longest winning streak?", "pub_date": "2025-08-17T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1018, "fields": {"question_text": "Which rivalry game will have the highest combined score?", "pub_date": "2025-08-18T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1019, "fields": {"question_text": "Which team will win the most conference games?", "pub_date": "2025-08-19T12:00:00Z"}},
-  {"model": "polls.question", "pk": 1020, "fields": {"question_text": "Which team will have the best special teams unit?", "pub_date": "2025-08-20T12:00:00Z"}},
 
   {"model": "polls.choice", "pk": 2001, "fields": {"question": 1001, "choice_text": "Georgia", "votes": 0}},
   {"model": "polls.choice", "pk": 2002, "fields": {"question": 1001, "choice_text": "Ohio State", "votes": 0}},
@@ -43,80 +28,5 @@
   {"model": "polls.choice", "pk": 2017, "fields": {"question": 1005, "choice_text": "Michigan", "votes": 0}},
   {"model": "polls.choice", "pk": 2018, "fields": {"question": 1005, "choice_text": "Ohio State", "votes": 0}},
   {"model": "polls.choice", "pk": 2019, "fields": {"question": 1005, "choice_text": "Penn State", "votes": 0}},
-  {"model": "polls.choice", "pk": 2020, "fields": {"question": 1005, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2021, "fields": {"question": 1006, "choice_text": "Oklahoma", "votes": 0}},
-  {"model": "polls.choice", "pk": 2022, "fields": {"question": 1006, "choice_text": "Oklahoma State", "votes": 0}},
-  {"model": "polls.choice", "pk": 2023, "fields": {"question": 1006, "choice_text": "Texas", "votes": 0}},
-  {"model": "polls.choice", "pk": 2024, "fields": {"question": 1006, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2025, "fields": {"question": 1007, "choice_text": "Clemson", "votes": 0}},
-  {"model": "polls.choice", "pk": 2026, "fields": {"question": 1007, "choice_text": "Florida State", "votes": 0}},
-  {"model": "polls.choice", "pk": 2027, "fields": {"question": 1007, "choice_text": "Louisville", "votes": 0}},
-  {"model": "polls.choice", "pk": 2028, "fields": {"question": 1007, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2029, "fields": {"question": 1008, "choice_text": "Fresno State", "votes": 0}},
-  {"model": "polls.choice", "pk": 2030, "fields": {"question": 1008, "choice_text": "Utah State", "votes": 0}},
-  {"model": "polls.choice", "pk": 2031, "fields": {"question": 1008, "choice_text": "Wake Forest", "votes": 0}},
-  {"model": "polls.choice", "pk": 2032, "fields": {"question": 1008, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2033, "fields": {"question": 1009, "choice_text": "Team A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2034, "fields": {"question": 1009, "choice_text": "Team B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2035, "fields": {"question": 1009, "choice_text": "Team C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2036, "fields": {"question": 1009, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2037, "fields": {"question": 1010, "choice_text": "QB1", "votes": 0}},
-  {"model": "polls.choice", "pk": 2038, "fields": {"question": 1010, "choice_text": "QB2", "votes": 0}},
-  {"model": "polls.choice", "pk": 2039, "fields": {"question": 1010, "choice_text": "QB3", "votes": 0}},
-  {"model": "polls.choice", "pk": 2040, "fields": {"question": 1010, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2041, "fields": {"question": 1011, "choice_text": "RB1", "votes": 0}},
-  {"model": "polls.choice", "pk": 2042, "fields": {"question": 1011, "choice_text": "RB2", "votes": 0}},
-  {"model": "polls.choice", "pk": 2043, "fields": {"question": 1011, "choice_text": "RB3", "votes": 0}},
-  {"model": "polls.choice", "pk": 2044, "fields": {"question": 1011, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2045, "fields": {"question": 1012, "choice_text": "Freshman A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2046, "fields": {"question": 1012, "choice_text": "Freshman B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2047, "fields": {"question": 1012, "choice_text": "Freshman C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2048, "fields": {"question": 1012, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2049, "fields": {"question": 1013, "choice_text": "Team X", "votes": 0}},
-  {"model": "polls.choice", "pk": 2050, "fields": {"question": 1013, "choice_text": "Team Y", "votes": 0}},
-  {"model": "polls.choice", "pk": 2051, "fields": {"question": 1013, "choice_text": "Team Z", "votes": 0}},
-  {"model": "polls.choice", "pk": 2052, "fields": {"question": 1013, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2053, "fields": {"question": 1014, "choice_text": "Coach A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2054, "fields": {"question": 1014, "choice_text": "Coach B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2055, "fields": {"question": 1014, "choice_text": "Coach C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2056, "fields": {"question": 1014, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2057, "fields": {"question": 1015, "choice_text": "Team A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2058, "fields": {"question": 1015, "choice_text": "Team B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2059, "fields": {"question": 1015, "choice_text": "Team C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2060, "fields": {"question": 1015, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2061, "fields": {"question": 1016, "choice_text": "Team A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2062, "fields": {"question": 1016, "choice_text": "Team B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2063, "fields": {"question": 1016, "choice_text": "Team C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2064, "fields": {"question": 1016, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2065, "fields": {"question": 1017, "choice_text": "Team A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2066, "fields": {"question": 1017, "choice_text": "Team B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2067, "fields": {"question": 1017, "choice_text": "Team C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2068, "fields": {"question": 1017, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2069, "fields": {"question": 1018, "choice_text": "Game A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2070, "fields": {"question": 1018, "choice_text": "Game B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2071, "fields": {"question": 1018, "choice_text": "Game C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2072, "fields": {"question": 1018, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2073, "fields": {"question": 1019, "choice_text": "Team A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2074, "fields": {"question": 1019, "choice_text": "Team B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2075, "fields": {"question": 1019, "choice_text": "Team C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2076, "fields": {"question": 1019, "choice_text": "Other", "votes": 0}},
-
-  {"model": "polls.choice", "pk": 2077, "fields": {"question": 1020, "choice_text": "Unit A", "votes": 0}},
-  {"model": "polls.choice", "pk": 2078, "fields": {"question": 1020, "choice_text": "Unit B", "votes": 0}},
-  {"model": "polls.choice", "pk": 2079, "fields": {"question": 1020, "choice_text": "Unit C", "votes": 0}},
-  {"model": "polls.choice", "pk": 2080, "fields": {"question": 1020, "choice_text": "Other", "votes": 0}}
+  {"model": "polls.choice", "pk": 2020, "fields": {"question": 1005, "choice_text": "Other", "votes": 0}}
 ]

@@ -21,7 +21,6 @@ What this app does
 
 
 ```
-
 ├─ manage.py
 ├─ requirements.txt
 ├─ README.md (this file)
@@ -121,7 +120,7 @@ All templates extend from base.html for consistent site styling.
     - Windows
 
 - Required libraries (install with pip):
-```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -141,7 +140,7 @@ pip install -r requirements.txt
 ## Executing program
 
 Run the server
-```
+```bash
 python manage.py runserver
 ```
 The server will run on http://127.0.0.1:8000
@@ -149,10 +148,9 @@ The server will run on http://127.0.0.1:8000
 ## Help
  
 If you encounter issues, re-run pip installs and re-seed the app settings:
-```
+```bash
 pip install -r requirements.txt
 python manage.py runserver
-
 ```
  
 ## Authors

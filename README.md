@@ -21,42 +21,46 @@ What this app does
 
 
 ```
+
 ├─ manage.py
 ├─ requirements.txt
 ├─ README.md (this file)
 ├─ mysite/
-│ ├─ init.py
-│ ├─ asgi.py
-│ ├─ settings.py # Installed apps, templates, static config
-│ ├─ urls.py # Includes polls.urls and authentication routes
-│ └─ wsgi.py
+│  ├─ __init__.py
+│  ├─ asgi.py
+│  ├─ settings.py   # Installed apps, templates, static config
+│  ├─ urls.py       # Includes polls.urls and authentication routes
+│  └─ wsgi.py
 ├─ polls/
-│ ├─ init.py
-│ ├─ admin.py # ModelAdmin for Question and Choice
-│ ├─ models.py # Question and Choice models
-│ ├─ views.py # home, about, trivia, register, logout_then_home, etc.
-│ ├─ urls.py # App-specific routes
-│ ├─ migrations/
-│ ├─ static/
-│ │ ├─ polls/
-│ │ │ ├─ cfp_trophy.png
-│ │ │ └─ style.css
-│ └─ templates/
-│ ├─ polls/
-│ │ ├─ about.html
-│ │ ├─ base.html
-│ │ ├─ cfp_results.html
-│ │ ├─ cfp_vote.html
-│ │ ├─ detail.html
-│ │ ├─ home.html
-│ │ ├─ index.html
-│ │ ├─ question_list.html
-│ │ ├─ results.html
-│ │ └─ trivia.html
-│ └─ registration/
-│ ├─ login.html
-│ └─ register.html
-└─ db.sqlite3 # Created at runtime
+│  ├─ __init__.py
+│  ├─ admin.py      # ModelAdmin for Question and Choice
+│  ├─ models.py     # Question and Choice models
+│  ├─ views.py      # home, about, trivia, register, logout_then_home, etc.
+│  ├─ urls.py       # App-specific routes
+│  ├─ fixtures/
+│  │  └─ cfp_questions_with_choices.json
+│  ├─ migrations/
+│  │  └─ 0001_initial.py
+│  ├─ static/
+│  │  └─ polls/
+│  │     ├─ cfp_trophy.png
+│  │     └─ style.css
+│  └─ templates/
+│     ├─ polls/
+│     │  ├─ about.html
+│     │  ├─ base.html
+│     │  ├─ cfp_results.html
+│     │  ├─ cfp_vote.html
+│     │  ├─ detail.html
+│     │  ├─ home.html
+│     │  ├─ index.html
+│     │  ├─ question_list.html
+│     │  ├─ results.html
+│     │  └─ trivia.html
+│     └─ registration/
+│        ├─ login.html
+│        └─ register.html
+└─ db.sqlite3        # Created at runtime
 ```
 
 
@@ -76,6 +80,7 @@ Foreign keys and relationships are managed automatically through Django’s ORM 
      python manage.py makemigrations
      python manage.py migrate
      python manage.py createsuperuser
+     python manage.py loaddata cfp_questions_with_choices.json
      ```
 
 2. **Start the development server**
